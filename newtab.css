@@ -1,0 +1,136 @@
+html, body { height:100%; margin:0; background:#0b0f14; overflow:hidden; }
+
+:root{
+  --search-width: 638px;
+  --search-max-width: 85vw;
+  --search-top-margin: 110px;
+  --search-height: 38px;
+  --search-line-height: 40px;
+  --search-radius: 30px;
+  --search-border: 2px;
+
+  --search-padding-left: 44px;  /* room for icon */
+  --search-padding-right: 25px;
+
+  --icon-btn-size: 40px;
+  --icon-size: 18px;
+  --icon-left: 10px;
+
+  --idle-bg: rgba(255,255,255,0.15);
+  --active-bg: rgba(255,255,255,0.60);
+
+  --idle-text: #fff;
+  --active-text: #000;
+
+  --idle-border: rgba(255,255,255,0.3);
+  --active-border: #fff;
+
+  --icon-idle: #fff;
+  --icon-active: #534646;
+}
+
+#bg{
+  position:fixed; inset:0;
+  background:center/cover no-repeat;
+  z-index:0;
+}
+
+#bg::after{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(transparent 40%, rgba(0,0,0,0.45));
+}
+
+/* MyStart-like search */
+#module-search{
+  position: relative;
+  z-index: 10;
+  width: var(--search-width);
+  max-width: var(--search-max-width);
+  margin: var(--search-top-margin) auto 0;
+  color: var(--idle-text);
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.25));
+}
+
+/* Kept for semantic parity with the original MyStart classes. */
+#module-search.search-position-tc{ transform: translateX(0%); }
+#module-search.search-style-bigwhiteroundedTransparent{ }
+
+#module-search form{
+  position: relative;
+}
+
+#module-search.search-style-bigwhiteroundedTransparent input{
+  width: 100%;
+  min-height: var(--search-height);
+  line-height: var(--search-line-height);
+
+  padding: 0 var(--search-padding-right) 0 var(--search-padding-left);
+
+  border-radius: var(--search-radius);
+  border: var(--search-border) solid var(--idle-border);
+
+  outline: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+
+  color: var(--idle-text);
+  background-color: var(--idle-bg);
+
+  transition: background-color 0.333s ease-in-out, color 0.222s ease-in-out, border-color 0.333s ease-in-out;
+}
+
+/* MyStart uses placeholder=" " so this stays "empty" visually */
+#module-search.search-style-bigwhiteroundedTransparent input::placeholder{
+  color: inherit;
+  opacity: 0;
+}
+
+/* On focus or after typing: solid white background + solid border */
+#module-search.search-style-bigwhiteroundedTransparent:focus-within input,
+#module-search.search-style-bigwhiteroundedTransparent input:not(:placeholder-shown){
+  background-color: var(--active-bg);
+  color: var(--active-text);
+  border-color: var(--active-border);
+}
+
+/* Icon button: left, centered vertically */
+#module-search.search-style-bigwhiteroundedTransparent #btn-search{
+  position: absolute;
+  top: 50%;
+  left: var(--icon-left);
+  transform: translateY(-50%);
+
+  width: var(--icon-btn-size);
+  height: var(--icon-btn-size);
+
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
+  display: grid;
+  place-items: center;
+}
+
+/* Masked SVG icon */
+#module-search.search-style-bigwhiteroundedTransparent #btn-search::before{
+  content: '';
+  width: var(--icon-size);
+  height: var(--icon-size);
+
+  -webkit-mask: url('https://mystart.mystartcdn.com/assets-new-tab/images/ic-search-new.svg') no-repeat center;
+  mask: url('https://mystart.mystartcdn.com/assets-new-tab/images/ic-search-new.svg') no-repeat center;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+
+  background-color: var(--icon-idle);
+  transition: background-color 0.333s ease-in-out;
+}
+
+/* When focused/typed, icon becomes dark */
+#module-search.search-style-bigwhiteroundedTransparent:focus-within #btn-search::before,
+#module-search.search-style-bigwhiteroundedTransparent input:not(:placeholder-shown) + #btn-search::before{
+  background-color: var(--icon-active);
+}
